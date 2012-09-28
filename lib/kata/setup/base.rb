@@ -24,25 +24,25 @@ module Kata
 
         raise Exception, 'Unable to determine github user' if github.user.empty?
 
-        github.token = %x{git config --get github.token}.chomp
+        #github.token = %x{git config --get github.token}.chomp
 
-        raise Exception, 'Unable to determine github api token' if github.token.empty?
+        #raise Exception, 'Unable to determine github api token' if github.token.empty?
 
-        user_string = "-u '#{github.user}/token:#{github.token}'"
-        repo_params = "-d 'name=#{repo_name}' -d 'description=code+kata+repo'"
+        #user_string = "-u '#{github.user}/token:#{github.token}'"
+        #repo_params = "-d 'name=#{repo_name}' -d 'description=code+kata+repo'"
 
         # Create the repo on github
-        if options.repo
-          print 'Creating github repo...'
-          raise SystemCallError, 'unable to use curl to create repo on github' unless system <<-EOF
-            curl -s #{user_string} #{repo_params} #{github.url}repos/create 2>&1 > /dev/null;
-          EOF
-          puts 'complete'
-        end
+        #if options.repo
+        #  print 'Creating github repo...'
+        #  raise SystemCallError, 'unable to use curl to create repo on github' unless system <<-EOF
+        #    curl -s #{user_string} #{repo_params} #{github.url}repos/create 2>&1 > /dev/null;
+        #  EOF
+        #  puts 'complete'
+        #end
 
         # publish to github
 
-        print 'creating files for repo and initializing...'
+        #print 'creating files for repo and initializing...'
 
         cmd = "cd #{repo_name};"
         if options.repo
@@ -52,8 +52,8 @@ module Kata
           cmd << "git add #{ENV['PWD']}/#{repo_name};"
         end
         cmd << "git commit -m 'starting kata' 2>&1 > /dev/null;"
-        cmd << "git remote add origin git@github.com:#{github.user}/#{repo_name}.git 2>&1 > /dev/null;" if options.repo
-        cmd << 'git push origin master 2> /dev/null'
+        #cmd << "git remote add origin git@github.com:#{github.user}/#{repo_name}.git 2>&1 > /dev/null;" if options.repo
+        #cmd << 'git push origin master 2> /dev/null'
 
         raise SystemCallError, 'unable to add files to github repo' unless system(cmd)
 
